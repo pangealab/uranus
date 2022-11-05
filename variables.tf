@@ -8,7 +8,7 @@ variable "cluster-name" {
 }
 
 variable "kubernetes_version" {
-  default = "1.18"
+  default = "1.23"
   type    = string
 }
 
