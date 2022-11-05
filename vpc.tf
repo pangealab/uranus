@@ -9,10 +9,11 @@
 resource "aws_vpc" "kubernetes" {
   cidr_block = "12.0.0.0/16"
 
-  tags = map(
-    "Name", "Kubernetes VPC",
-    "kubernetes.io/cluster/${var.cluster-name}", "shared",
-  )
+  # Tagging
+  tags = tomap({
+    "Name" = "Kubernetes VPC",
+    "kubernetes.io/cluster/${var.cluster-name}" = "shared",
+    })
 }
 
 resource "aws_subnet" "kubernetes" {
@@ -23,32 +24,9 @@ resource "aws_subnet" "kubernetes" {
   vpc_id            = aws_vpc.kubernetes.id
   map_public_ip_on_launch = "true"
 
-  tags = map(
-    "Name", "Kubernetes Subnet",
-    "kubernetes.io/cluster/${var.cluster-name}", "shared",
-  )
-}
-
-resource "aws_internet_gateway" "kubernetes" {
-  vpc_id = aws_vpc.kubernetes.id
-
-  tags = {
-    Name = "Kubernetes IGW"
-  }
-}
-
-resource "aws_route_table" "kubernetes" {
-  vpc_id = aws_vpc.kubernetes.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.kubernetes.id
-  }
-}
-
-resource "aws_route_table_association" "kubernetes" {
-  count = 2
-
-  subnet_id      = aws_subnet.kubernetes.*.id[count.index]
-  route_table_id = aws_route_table.kubernetes.id
+  # Tagging
+  tags = tomap({
+    "Name" = "Kubernetes VPC",
+    "kubernetes.io/cluster/${var.cluster-name}" = "shared",
+    })  
 }
