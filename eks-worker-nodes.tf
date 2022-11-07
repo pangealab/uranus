@@ -45,7 +45,6 @@ resource "aws_eks_node_group" "kubernetes" {
   subnet_ids      = aws_subnet.kubernetes[*].id
   instance_types  = ["m5.xlarge"]
   disk_size       = 100
-  volume_type     = "gp2"
 
   scaling_config {
     desired_size = 4
